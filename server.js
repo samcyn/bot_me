@@ -1,3 +1,11 @@
+/**
+ * created by Samson Iyanda
+ * https://github.com/samcyn
+ * samsoniyanda@outlook.com
+ * https://samsoniyanda.herokuapp.com
+ *
+ */
+
 require('dotenv').config({ silent: true });
 
 var server = require('./app');
