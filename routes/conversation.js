@@ -56,6 +56,7 @@ module.exports = function(app) {
       if (error) {
         return next(error);
       }
+      console.log(data);
       // update response before sending to client....
       return res.json(updateMessage(payload, data));
     });

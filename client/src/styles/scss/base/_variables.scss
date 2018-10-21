@@ -1,0 +1,37 @@
+/**
+ * created by Samson Iyanda
+ * https://github.com/samcyn
+ * samsoniyanda@outlook.com
+ * https://samsoniyanda.herokuapp.com
+ *
+ */
+
+// C O L O U R S
+$brand-purple: #A8AC2E;
+$brand-grey: #E8EDE9;
+$brand-grey-n: #F8F8F8;
+$brand-grey-o: #E6E6E6;
+$brand-grey-m: #EDEDED;
+$brand-blue: #636FD4;
+$brand-dark: #222222;
+$brand-dark-o: #636B7B;
+$brand-white: #FFFFFF;
+
+// F O N T S
+$regularFont: 'ProximaNova-Regular', sans-serif;
+$boldFont: 'ProximaNova-SemiBold', sans-serif;
+$thinFont: 'ProximaNova-Thin', sans-serif;
+
+// D E R I V E D V A R I A B L E
+$family-primary: $regularFont;
+$text: $brand-dark-o;
+
+// S P A C I N G
+$tabPane: 440px;
+$headerHeight: 60px;
+$chatAreaHeight: 128px;
+
+
+$card-background-color: transparent;
+$card-shadow: 0 2px 8px 0 #E7E6E6;
+$card-header-shadow: none;

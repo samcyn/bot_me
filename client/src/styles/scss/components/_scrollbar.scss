@@ -1,0 +1,36 @@
+/**
+ * created by Samson Iyanda
+ * https://github.com/samcyn
+ * samsoniyanda@outlook.com
+ * https://samsoniyanda.herokuapp.com
+ *
+ */
+
+%scroll {
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: transparent;
+  }
+  &:hover {
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background-color: #f5f5f5;
+    }
+    &::-webkit-scrollbar {
+      width: 4px;
+      background-color: #f5f5f5;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: #c0c0c0;
+    }
+  }
+}

@@ -1,0 +1,80 @@
+/**
+ * created by Samson Iyanda
+ * https://github.com/samcyn
+ * samsoniyanda@outlook.com
+ * https://samsoniyanda.herokuapp.com
+ *
+ */
+
+.bot__aside {
+  height: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  width: $tabPane;
+  z-index: 4;
+  
+  @media (max-width: 440px) {
+    width: 80%;
+  }
+  @media (max-width: 1087px) {
+    left: auto;
+    right: 0;
+  }
+  @media (min-width: 1088px) {
+    .navbar-item {
+      padding-left: 63px;
+    }
+  }
+}
+
+@import "../components/_aside-title.scss";
+
+.bot__aside-body {
+  background-color: $brand-grey-n;
+  border: 2px solid $brand-grey-m;
+  height: calc(100% - #{$headerHeight});
+  padding: 12px;
+  overflow-y: scroll;
+  transition: all 0.33s linear;
+  @extend %scroll;
+  @media (min-width: 1088px) {
+    padding: 40px 37px 40px 63px;    
+  }
+}
+
+.bot__aside-help-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.bot__aside-help {
+  color: $brand-dark;
+  font-family: $boldFont;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  margin-left: 10px;
+}
+
+.bot__hr {
+  background-color: #DBDBDB;
+  height: 2px;
+  margin: 9px 0 16px 0;
+}
+
+.bot__description {
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
+@import "../components/_card.scss";
+
+.bot__items {
+  margin-bottom: 16px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,28 @@
+/**
+ * created by Samson Iyanda
+ * https://github.com/samcyn
+ * samsoniyanda@outlook.com
+ * https://samsoniyanda.herokuapp.com
+ *
+ */
+
+.circles {
+  align-items: center;
+  border-radius: 100%;
+  background-color:$brand-purple;
+  color: $brand-white;
+  display: flex;
+  flex: 0 0 32px;
+  font-family: $boldFont;
+  font-size: 16px;
+  font-weight: bold;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.circles__letter {
+  line-height: 20px;
+  height: 16px;
+}
+

@@ -12,3 +12,5 @@ dist/
 .jshintrc
 .DS_Store
 yarn.lock
+package-lock.json
+*.css

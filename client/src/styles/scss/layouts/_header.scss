@@ -1,0 +1,21 @@
+/**
+ * created by Samson Iyanda
+ * https://github.com/samcyn
+ * samsoniyanda@outlook.com
+ * https://samsoniyanda.herokuapp.com
+ *
+ */
+
+.bot__header {
+  height: $headerHeight;
+}
+
+.navbar, 
+.navbar-brand, 
+.navbar-burger {
+  height: 100%;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px 0 rgba(223, 223, 223, 0.5);
+}

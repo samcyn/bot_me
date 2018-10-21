@@ -1,0 +1,26 @@
+/**
+ * created by Samson Iyanda
+ * https://github.com/samcyn
+ * samsoniyanda@outlook.com
+ * https://samsoniyanda.herokuapp.com
+ *
+ */
+
+.input.input--brand {
+  border: 0 !important;
+  border-radius: 40px;
+  box-shadow: none !important;
+  // font-family: $regularFont ;
+  font-size: 14px;
+  font-weight: 400;
+  height: 58px;
+  @media (max-width: 768px) {
+    height: 54px;
+  }
+  line-height: 17px;
+  outline: 0 !important;
+  padding: 21px 32px 20px 32px;
+  &::placeholder {
+    color: #C0C0C0;
+  }
+}

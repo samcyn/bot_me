@@ -1,0 +1,84 @@
+/**
+ * created by Samson Iyanda
+ * https://github.com/samcyn
+ * samsoniyanda@outlook.com
+ * https://samsoniyanda.herokuapp.com
+ *
+ */
+
+.bot__main {
+  margin-left: auto;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  transition: all .33s cubic-bezier(.685,.0473,.346,1);
+  width: calc(100% - #{$tabPane});
+  z-index: 5;
+ 
+  @media (max-width: 1087px) {
+    width: 100%;
+  }
+  @media (min-width: 1088px) {
+    .navbar-item {
+      padding-left: 39px;
+    }
+  }
+}
+
+@media (max-width: 440px) {
+  .openNav .bot__main {
+    transform: translate(-80%);
+  }
+}
+
+@media (max-width: 1087px) and (min-width: 441px) {
+  .openNav .bot__main {
+    transform: translate(-#{$tabPane});
+  }
+}
+
+.bot__body {
+  height: calc(100% - #{$headerHeight});
+  overflow: hidden;
+}
+
+.bot__message-pane {
+  border-top: 2px solid $brand-grey-m;
+  background-color: $brand-white;
+  // display: flex;
+  // justify-content: flex-end;
+  // flex-direction: column;
+  height: calc(100% - #{$chatAreaHeight});
+  @media (max-width: 768px) {
+    height: calc(100% - 80px);
+  }
+  padding: 12px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  @extend %scroll;
+  @media (min-width: 1088px) {
+    padding: 29px 59px 29px 40px;    
+  }
+}
+
+.bot__message-input {
+  border-top: 2px solid $brand-grey-m;
+  box-shadow: 0 -1px 3px 0 rgba(231, 230, 230, 0.5);
+  background-color: $brand-grey-n;
+  height: $chatAreaHeight;
+  form : {
+    margin: 0;
+  }
+  @media (max-width: 768px) {
+    height: 80px;
+  }
+  padding: 12px;
+  @media (min-width: 1088px) {
+    padding: 19px 59px 51px 40px;        
+  }
+}
+
+@import "../components/_input.scss";
+@import "../components/_circles.scss";
+@import "../components/_userStatus.scss";
+@import "../components/_messages.scss";

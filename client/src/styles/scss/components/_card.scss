@@ -1,0 +1,79 @@
+/**
+ * created by Samson Iyanda
+ * https://github.com/samcyn
+ * samsoniyanda@outlook.com
+ * https://samsoniyanda.herokuapp.com
+ *
+ */
+
+.card {
+  border: 1px solid $brand-grey-o;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  height: 60px;
+  overflow: hidden;
+  * {
+    pointer-events: none;
+  }
+}
+
+.bot__active .card {
+  background-color: $brand-white;
+  height: auto;
+  transition: all 0.3s linear;
+  .card-header-title {
+    padding-bottom: 12px !important;
+  }
+  .card-content {
+    padding-top: 0 !important;
+  } 
+  .card-header-icon {
+    display: block;
+  }
+}
+
+.card--bgwhite {
+  background-color: $brand-white;
+  .card-header-title {
+    padding-bottom: 12px !important;
+  }
+  .card-content {
+    padding-top: 0 !important;
+  }
+}
+.card-header-title {
+  color: $brand-dark;
+  font-family: $boldFont;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 19px;
+  padding: 24px;
+  @media (max-width: 425px) {
+    padding: 12px;
+  }
+}
+
+.card-header-icon {
+  display: none;
+}
+.card-header-icon .icon-close{
+  color: #A2A2A2;
+  font-size: 20px;
+}
+
+.card-content {
+  color: $brand-dark-o;
+  // display: none;
+  font-family: $regularFont;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  .bot-item-link {
+    color: $brand-purple;
+    font-weight: 900;
+  }
+  @media (max-width: 425px) {
+    padding: 12px;
+  }
+}

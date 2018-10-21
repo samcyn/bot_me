@@ -1,0 +1,70 @@
+.message {
+  position: relative;
+  text-align: left; }
+  .message--from-left {
+    text-align: left; }
+  .message--from-right {
+    text-align: right; }
+  .message__content {
+    background-color: #31a4d9;
+    border-radius: 1rem 1rem 1rem 0;
+    color: #fff;
+    margin-top: 0.1rem;
+    padding: 0.6rem;
+    width: fit-content;
+    word-wrap: break-word;
+    word-break: break-all; }
+    .message--from-left .message__content {
+      background-color: #31a4d9;
+      color: #fff;
+      border-radius: 1rem 1rem 1rem 0; }
+    .message--from-right .message__content {
+      color: #333;
+      margin-left: auto;
+      margin-right: 0;
+      background-color: #e0e0e0;
+      border-radius: 1rem 1rem 0 1rem; }
+  .message__date {
+    color: #777677;
+    font-size: 0.75rem;
+    margin-left: 1rem;
+    margin-top: 0.4rem; }
+    .message--from-left .message__date {
+      margin-left: 1rem; }
+    .message--from-right .message__date {
+      margin-right: 1rem; }
+  .message__label {
+    color: #00b4a0; }
+  .message__tail {
+    margin: 0;
+    height: 1rem;
+    width: 1rem;
+    max-width: 1rem;
+    position: absolute; }
+    .message--from-left .message__tail {
+      left: 0; }
+    .message--from-right .message__tail {
+      right: 0; }
+  .message__tail-background {
+    height: inherit;
+    width: inherit;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0; }
+    .message--from-left .message__tail-background {
+      background-color: #31a4d9; }
+    .message--from-right .message__tail-background {
+      background-color: #e0e0e0; }
+  .message__tail-foreground {
+    height: inherit;
+    width: inherit;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #fff; }
+    .message--from-left .message__tail-foreground {
+      border-top-left-radius: 1rem; }
+    .message--from-right .message__tail-foreground {
+      border-top-right-radius: 1rem; }
