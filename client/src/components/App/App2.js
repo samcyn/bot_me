@@ -7,10 +7,10 @@
  */
 
 import React, { Component } from "react";
-import SideBar from "../layouts/SideBar";
+import SideBar from "../layouts/SideBar/SideBar";
 
 import "./App.css";
-import MainContent from "../layouts/MainContent";
+import MainContent from "../layouts/MainContent/MainContent";
 
 class App extends Component {
   constructor(props) {

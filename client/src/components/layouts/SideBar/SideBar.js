@@ -7,9 +7,10 @@
  */
 
 import React, { Component } from "react";
-import Header from "./Header";
+import Header from "../Header/Header";
 
-import botServices from "../../utils/botServices";
+import botServices from "../../../utils/botServices";
+import "./SideBar.css";
 
 const servicesAvailable = botServices || [];
 

@@ -7,6 +7,7 @@
  */
 
 import React from "react";
+import "./Header.css";
 
 const Header = ({isSideBar, sideBarToggleHandler}) => (
   <header className="bot__header">
