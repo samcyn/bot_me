@@ -1,12 +1,14 @@
 const ResponseHandler = (apiResponse, addMessage) => {
   if (apiResponse) {
     // console.log(apiResponse);
-    const { intents, output, entities, context } = apiResponse.data;
+    const { intents, output, /*entities, context*/ } = apiResponse.data;
     // P I C K - T H E - F I R S T - I N T E N T - A N D - C O N F I D E N C E;
     const outputIntent = intents && intents[0] ? intents[0].intent : "";
-    const outputConfidence = intents && intents[0] ? intents[0].confidence : "";
+    //const outputConfidence = intents && intents[0] ? intents[0].confidence : "";
+    
     // P I C K - T H E - F I R S T - E N T I T Y ;
-    const outputEntity = entities && entities[0] ? entities[0] : "";
+    //const outputEntity = entities && entities[0] ? entities[0] : "";
+    
     // P I C K - D A T E;
     const outputDate = new Date().toLocaleTimeString();
 

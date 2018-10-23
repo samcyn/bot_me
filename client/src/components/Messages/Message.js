@@ -1,15 +1,28 @@
 import React from "react";
+import Loader from "../Loader/Loader";
 
-const OptionsHTMLBuild = ({ newMessage }) => {
+const OptionsHTMLBuild = ({ newMessage, addMessage, conversationHandler }) => {
   const sendOptionValue = message => {
-    console.log(message.value.input);
+    const text = message.value.input.text;
+    const outputDate = new Date().toLocaleTimeString();
+    const outputMessage = {
+      position: "right",
+      message: text,
+      date: outputDate,
+      hasTail: true
+    };
+    // A D D - U S E R - I N P U T - T O - T H E - P A N E L
+    addMessage(outputMessage);
+
+    // S E N D - R E Q U E S T;
+    conversationHandler(text, addMessage);
   };
 
   return (
     <div>
-      <p>{newMessage.message.title}</p>
+      <p>{newMessage.title}</p>
       <ul>
-        {newMessage.message.options.map(message => (
+        {newMessage.options.map(message => (
           <li key={message.label} onClick={() => sendOptionValue(message)}>
             {message.label}
           </li>
@@ -19,10 +32,11 @@ const OptionsHTMLBuild = ({ newMessage }) => {
   );
 };
 
-const Message = ({ newMessage }) => {
+const Message = ({ newMessage, conversationHandler, addMessage, isLoading }) => {
   const { position, message } = newMessage;
   return (
-    <div className="message is-clearfix fadeInUp">
+    // D E C I D E - W H I C H - C L A S S - I F - S E R V E R - I S - B U S Y
+    <div className={ isLoading ? "message is-clearfix fadeInUp is-loading" : "message is-clearfix fadeInUp"}>
       {/* D E C I D E - C L A S S - B A S E D - O N - M E S S A G E - P O S I T I O N */}
       <div
         className={
@@ -48,15 +62,19 @@ const Message = ({ newMessage }) => {
             }
           >
             {/* I F - M E S S A G E - T Y P E - I S - S T R I N G */}
-            {typeof newMessage.message === "string" && (
-              <p>{newMessage.message}</p>
-            )}
+            {typeof message === "string" && <p>{message}</p>}
             {/* I F - M E S S A G E - T Y P E - I S - O B J E C T */}
-            {typeof newMessage.message === "object" && (
-              <OptionsHTMLBuild newMessage={newMessage} />
+            {typeof message === "object" && (
+              <OptionsHTMLBuild
+                newMessage={message}
+                addMessage={addMessage}
+                conversationHandler={conversationHandler}
+              />
             )}
           </div>
         </div>
+        {/* L O A D E R - S H O W N - W H E N - I T E M - I S - L A S T - I N - T H E - P A N E L - A N D - I T'S - N O T - W A T S O N - R E S P O N S E - B U T - U S E R S */}
+        {position !== "left" && isLoading && <div className="message__loader is-pulled-right"><Loader /></div>}
       </div>
     </div>
   );

@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import ApiServices from "../services/Api";
-import ResponseHandler from "../utils/responseHandler";
-import ErrorHandler from "../utils/errorHandler";
 
 class UserInput extends Component {
   constructor(props) {
@@ -13,12 +10,18 @@ class UserInput extends Component {
     };
     this.submitUserInputHandler = this.submitUserInputHandler.bind(this);
   }
+  // I N I T I A L - M E S S A G E
+  componentDidMount() {
+    const { addMessage, conversationHandler } = this.props;
+    conversationHandler("hi", addMessage);
+  }
 
-  async submitUserInputHandler(e) {
+  submitUserInputHandler(e) {
     e.preventDefault();
     const { text } = this.state;
-    const { addMessage } = this.props;
-    if (text !== "") {
+    const { addMessage, conversationHandler, isLoading } = this.props;
+    // I F - T E X T - I S - N O T - E M P T Y - A N D - S E R V E R - I S - N O T - B U S Y
+    if (text !== "" && !isLoading) {
       const outputDate = new Date().toLocaleTimeString();
       const outputMessage = {
         position: "right",
@@ -33,16 +36,7 @@ class UserInput extends Component {
       this.setState({ text: "" });
 
       // S E N D - R E Q U E S T;
-      try {
-        const apiResponse = await ApiServices.post("/message", {
-          input: { text }
-        });
-        // R E S P O N S E - H A N D L E R;
-        ResponseHandler(apiResponse, addMessage);
-      } catch (err) {
-        // E R R O R - H A N D L E R;
-        ErrorHandler(err);
-      }
+      conversationHandler(text, addMessage);
     }
   }
 
