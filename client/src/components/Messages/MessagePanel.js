@@ -1,3 +1,11 @@
+/**
+ * created by Samson Iyanda
+ * https://github.com/samcyn
+ * samsoniyanda@outlook.com
+ * https://samsoniyanda.herokuapp.com
+ *
+ */
+
 import React, { Component } from "react";
 import Message from "./Message";
 
@@ -12,7 +20,7 @@ class MessagePanel extends Component {
   }
 
   render() {
-    const { messages, addMessage, conversationHandler, isLoading } = this.props;
+    const { messages, addMessage, conversationHandler, token, isLoading } = this.props;
     // L A S T - I N D E X / M E S S A G E  I N - T H E - P A N E L
     const lastIndex = messages.length - 1;
     return (
@@ -24,6 +32,7 @@ class MessagePanel extends Component {
             newMessage={message}
             addMessage={addMessage}
             conversationHandler={conversationHandler}
+            token={token}
             isLoading= { index === lastIndex ? isLoading : false } // O N L Y - T H E - L A S T - I T E M - S H O W - H A V E  -L O A D I N G
           />
         ))}

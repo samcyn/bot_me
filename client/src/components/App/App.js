@@ -8,138 +8,83 @@
 
 import React, { Component } from "react";
 import WatsonSpeech from "watson-speech";
+import SideBar from "../layouts/SideBar/SideBar";
+import MainContent from "../layouts/MainContent/MainContent";
+import ApiServices from "../../services/Api";
 
-import Conversation from "../conversation/Conversation";
-
-import Api from "../../services/Api";
 import "./App.css";
 
 class App extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      context: {},
-      messageObjectList: [],
-      discoveryNumber: 0,
-      token: null
+      openSideBar: false,
+      isAudio: false,
+      stream: null,
+      speechToken: null
     };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.generateTextToSpeechToken = this.generateTextToSpeechToken.bind(this);
-    this.conversationHandler = this.conversationHandler.bind(this);
-    this.handleResponse = this.handleResponse.bind(this);
+    this.generateSpeechToTextToken = this.generateSpeechToTextToken.bind(this);
   }
 
-  componentDidMount() {
-    this.conversationHandler("hello");
+  async componentDidMount() {
+    await this.generateSpeechToTextToken();
   }
 
-  async conversationHandler(message) {
-    let apiResponse = await Api.post("/message", { input: { text: message } });
-    await this.generateTextToSpeechToken();
-    this.handleResponse(apiResponse);
-  }
+  // F L I P - S I D B A R - S T A T E
+  sideBarToggleHandler = () => {
+    this.setState(prevState => {
+      return {
+        openSideBar: !prevState.openSideBar
+      };
+    });
+  };
 
-  async generateTextToSpeechToken() {
-    const token = await Api.get("/text-to-speech/token");
+  startRecordingAudio = () => {
+    this.setState(prevState => {
+      return {
+        isAudio: !prevState.isAudio
+      };
+    });
+
+    const { isAudio, speechToken } = this.state;
+    if (isAudio && speechToken) {
+      // S T A R T - R E C O R D I N G
+      const stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
+        token: speechToken,
+        extractResults: true,
+        inactivity_timeout: 5,
+        format: false,
+        keepMicrophone: true
+      });
+      if (stream) {
+        stream.on("data", function(data) {
+          if (data.final === true) {
+            stream.stop();
+          }
+        });
+        this.setState({ stream });
+      }
+    } 
+  };
+
+  async generateSpeechToTextToken() {
+    const token = await ApiServices.get("/speech-to-text/token");
     if (token) {
       this.setState({
-        token: token.data
+        speechToken: token.data
       });
     }
-    else {
-      return null
-    }
-  }
-
-  async textToSpeechHandler(message, token) {
-    WatsonSpeech.TextToSpeech.synthesize({
-      text: message, // Output text/response
-      voice: "en-US_MichaelVoice", // Default Watson voice
-      autoPlay: true, // Automatically plays audio
-      token: token
-    });
-  }
-
-  async handleResponse(responseJson) {
-    const outputIntent = responseJson.data.intents[0]
-      ? responseJson.data.intents[0].intent
-      : "";
-    const outputDate = new Date().toLocaleTimeString(); //responseJson.date.toLocaleTimeString();
-    const outputContext = responseJson.context;
-    this.setState({ context: outputContext });
-    responseJson.data.output.generic.forEach(data => {
-      if (data && data.response_type === "text") {
-        console.log(data.text);
-        this.addMessage({
-          position: "left",
-          label: outputIntent,
-          message: data.text,
-          date: outputDate,
-          hasTail: true
-        });
-        this.textToSpeechHandler(data.text, this.state.token);
-      }
-      if (data && data.response_type === "option") {
-        // console.log(data.title, data.options);
-        const message = {
-          title: data.title,
-          options: data.options
-        };
-        this.addMessage({
-          position: "left",
-          message,
-          date: outputDate,
-          hasTail: true
-        });
-        this.textToSpeechHandler(data.title, this.state.token);
-
-      }
-    });
-  }
-
-  addMessage(msgObj) {
-    this.setState({
-      messageObjectList: [...this.state.messageObjectList, msgObj]
-    });
-  }
-
-  async handleSubmit(msg) {
-    const inputMessage = msg;
-    const inputDate = new Date();
-    const formattedDate = inputDate.toLocaleTimeString();
-    const msgObj = {
-      position: "right",
-      message: inputMessage,
-      date: formattedDate,
-      hasTail: true
-    };
-    this.addMessage(msgObj);
-    // console.log(inputMessage);
-    await this.conversationHandler(inputMessage);
-  }
-
-  scrollToBottom() {
-    const element = document.getElementsByClassName(
-      "conversation__messages"
-    )[0];
-    element.scrollTop = element.scrollHeight;
-  }
-
-  componentDidUpdate() {
-    this.scrollToBottom();
   }
 
   render() {
+    const { openSideBar, stream } = this.state;
     return (
-      <div className="app-wrapper">
-        <Conversation
-          onSubmit={this.handleSubmit}
-          messageObjectList={this.state.messageObjectList}
-          conversationHandler={this.conversationHandler}
-        />
-      </div>
+      <main className={openSideBar ? "bot openNav" : "bot"}>
+        {/* S I D E B A R  */}
+        <SideBar startRecordingAudio={this.startRecordingAudio} />
+        {/* <M A I N C O N T E N T  */}
+        <MainContent sideBarToggleHandler={this.sideBarToggleHandler} stream={ stream }/>
+      </main>
     );
   }
 }

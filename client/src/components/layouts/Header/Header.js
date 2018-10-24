@@ -9,7 +9,7 @@
 import React from "react";
 import "./Header.css";
 
-const Header = ({isSideBar, sideBarToggleHandler}) => (
+const Header = ({isSideBar, startRecordingAudio, sideBarToggleHandler}) => (
   <header className="bot__header">
     {/* S I D E B A R - H E A D E R - OR - M A I N C O N T E N T - H E A D E R  */}
     { 
@@ -20,6 +20,7 @@ const Header = ({isSideBar, sideBarToggleHandler}) => (
             <h2 className="bot__aside-title">N.S.E Chatbot</h2>
           </div>
         </div>
+        <button onClick={ startRecordingAudio }>Audio</button>
       </nav>
       :
       <nav className="navbar" role="navigation" aria-label="main navigation">

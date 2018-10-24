@@ -1,3 +1,12 @@
+/**
+ * created by Samson Iyanda
+ * https://github.com/samcyn
+ * samsoniyanda@outlook.com
+ * https://samsoniyanda.herokuapp.com
+ *
+ */
+
+ 
 import React, { Component } from "react";
 
 class UserInput extends Component {
@@ -10,16 +19,12 @@ class UserInput extends Component {
     };
     this.submitUserInputHandler = this.submitUserInputHandler.bind(this);
   }
-  // I N I T I A L - M E S S A G E
-  componentDidMount() {
-    const { addMessage, conversationHandler } = this.props;
-    conversationHandler("hi", addMessage);
-  }
+  
 
   submitUserInputHandler(e) {
     e.preventDefault();
     const { text } = this.state;
-    const { addMessage, conversationHandler, isLoading } = this.props;
+    const { addMessage, conversationHandler, isLoading, textToken } = this.props;
     // I F - T E X T - I S - N O T - E M P T Y - A N D - S E R V E R - I S - N O T - B U S Y
     if (text !== "" && !isLoading) {
       const outputDate = new Date().toLocaleTimeString();
@@ -36,7 +41,7 @@ class UserInput extends Component {
       this.setState({ text: "" });
 
       // S E N D - R E Q U E S T;
-      conversationHandler(text, addMessage);
+      conversationHandler(text, addMessage, textToken);
     }
   }
 

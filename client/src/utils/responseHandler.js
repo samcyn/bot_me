@@ -1,4 +1,16 @@
-const ResponseHandler = (apiResponse, addMessage) => {
+import WatsonSpeech from "watson-speech";
+
+const textToSpeechHandler = (message, token) => {
+  
+  WatsonSpeech.TextToSpeech.synthesize({
+    text: message, // Output text/response
+    voice: "en-US_MichaelVoice", // Default Watson voice
+    autoPlay: true, // Automatically plays audio
+    token: token
+  });
+}
+
+const ResponseHandler = (apiResponse, addMessage, token) => {
   if (apiResponse) {
     // console.log(apiResponse);
     const { intents, output, /*entities, context*/ } = apiResponse.data;
@@ -24,6 +36,8 @@ const ResponseHandler = (apiResponse, addMessage) => {
         };
         // A D D - M E S S A G E - T O - T H E - P A C K;
         addMessage(outputMessage);
+        // R E A D - M E S S A G E - T O - U S E R
+        textToSpeechHandler(data.text, token);
       }
       if (data && data.response_type === "option") {
         // console.log("OPTIONS!");
@@ -44,4 +58,4 @@ const ResponseHandler = (apiResponse, addMessage) => {
   }
 };
 
-module.exports = ResponseHandler;
+export default ResponseHandler;
