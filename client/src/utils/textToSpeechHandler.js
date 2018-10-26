@@ -44,6 +44,7 @@ const startTalking = (message, token) => {
 const TextToSpeechHandler = (apiResponseFromWatsonConversation, token) => {
   if (apiResponseFromWatsonConversation) {
     const { output } = apiResponseFromWatsonConversation.data;
+    // M E S S A G E S - A R E - A R R A N G E - I N - B A T C H E S.. - M A K I N G - I T - S O - E A S Y - T O - F I L T E R - O U T - L A S T - B A C T H - O F - M E S S A G E S
     let batchMessages = "";
 
     output.generic.forEach(data => {
@@ -59,6 +60,7 @@ const TextToSpeechHandler = (apiResponseFromWatsonConversation, token) => {
     });
 
     textMessage.push(batchMessages);
+    // I F - A R R A Y - I S - E M P T Y - N O T H I N G - TO - R E A D
     if (textMessage.length > 0) {
       // S T A R T - S P E A K I N G
       startTalking(textMessage, token);

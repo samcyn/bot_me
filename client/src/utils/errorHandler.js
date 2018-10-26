@@ -14,13 +14,12 @@ const ErrorHandler = err => {
       message = err.response.statusText;
     }
   }
-  // if (err.response === undefined) {
-  //   message = "You're probably offline, check your connection and try again.";
-  // }
-  // else {
-  //   message = "Something is probably wrong check back later";
-  // }
-  // alert(message);
+  if (err.response === undefined) {
+    message = "You're probably offline, check your connection and try again.";
+  } else {
+    message = "Something is probably wrong check back later";
+  }
+  alert(message, err.code);
 };
 
 module.exports = ErrorHandler;
