@@ -13,6 +13,7 @@ import MessagePanel from "../../Messages/MessagePanel";
 
 import ApiServices from "../../../services/Api";
 import ResponseHandler from "../../../utils/responseHandler";
+import TextToSpeechHandler from "../../../utils/textToSpeechHandler";
 import ErrorHandler from "../../../utils/errorHandler";
 
 import "./MainContent.css";
@@ -77,8 +78,11 @@ class MainContent extends Component {
       // S T O P - L O A D E R
       this.setState({ isLoading: false });
 
-      // R E S P O N S E - H A N D L E R;
-      ResponseHandler(apiResponse, addMessage, textToken);
+      // R E S P O N S E - H A N D L E R - W A T S O N - C O N V E R S A T I O N;
+      ResponseHandler(apiResponse, addMessage);
+      // T E X T - T O - S P E E C H - H A N D L E R - W A T S O N;
+      TextToSpeechHandler(apiResponse, textToken);
+
     } catch (err) {
       // E R R O R - H A N D L E R;
       ErrorHandler(err);
