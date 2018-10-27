@@ -38,30 +38,6 @@ class MainContent extends Component {
     this.conversationHandler("hi", this.addMessage, textToken);
   }
 
-  componentDidUpdate () {
-  
-    const { stream } = this.props;
-    // S T O P - R E C O R D I N G
-    if (stream) {
-      stream.promise()
-        .then(function (data) {
-          if (data.length !== 0) {
-            const dialogue = data.pop();
-            if ((dialogue.alternatives[0].transcript !== '') && (dialogue.final === true)) {
-              const confidence = dialogue.alternatives[0].confidence;
-              const text = dialogue.alternatives[0].transcript;
-              console.log(text);
-            }
-          }
-        })
-        .catch(function (err) {
-          console.log(err);
-        });
-      stream.stop();
-    }
-    
-  }
-
   addMessage = msgObj => {
     this.setState({
       messageObjectList: [...this.state.messageObjectList, msgObj]

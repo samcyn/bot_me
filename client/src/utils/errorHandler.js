@@ -19,7 +19,7 @@ const ErrorHandler = err => {
   } else {
     message = "Something is probably wrong check back later";
   }
-  alert(message, err.code);
+  // alert(message, err.code);
 };
 
 module.exports = ErrorHandler;
