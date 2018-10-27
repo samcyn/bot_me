@@ -7,31 +7,31 @@
  */
 
 // C O L O U R S
-$brand-purple: #A8AC2E;
-$brand-grey: #E8EDE9;
-$brand-grey-n: #F8F8F8;
-$brand-grey-o: #E6E6E6;
-$brand-grey-m: #EDEDED;
-$brand-blue: #636FD4;
+$brand-purple: #a8ac2e;
+$brand-grey: #e8ede9;
+$brand-grey-n: #f8f8f8;
+$brand-grey-o: #e6e6e6;
+$brand-grey-m: #ededed;
+$brand-blue: #636fd4;
 $brand-dark: #222222;
-$brand-dark-o: #636B7B;
-$brand-white: #FFFFFF;
+$brand-dark-o: #636b7b;
+$brand-white: #ffffff;
 
 // F O N T S
-$regularFont: 'ProximaNova-Regular', sans-serif;
-$boldFont: 'ProximaNova-SemiBold', sans-serif;
-$thinFont: 'ProximaNova-Thin', sans-serif;
+$regularFont: "ProximaNova-Regular", sans-serif;
+$boldFont: "ProximaNova-SemiBold", sans-serif;
+$thinFont: "ProximaNova-Thin", sans-serif;
 
 // D E R I V E D V A R I A B L E
 $family-primary: $regularFont;
 $text: $brand-dark-o;
+$primary: $brand-purple;
 
 // S P A C I N G
 $tabPane: 440px;
 $headerHeight: 60px;
 $chatAreaHeight: 128px;
 
-
 $card-background-color: transparent;
-$card-shadow: 0 2px 8px 0 #E7E6E6;
+$card-shadow: 0 2px 8px 0 #e7e6e6;
 $card-header-shadow: none;

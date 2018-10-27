@@ -14,8 +14,8 @@ const ErrorHandler = err => {
       message = err.response.statusText;
     }
   }
-  if (err.response === undefined) {
-    message = "You're probably offline, check your connection and try again.";
+  if (err.message) {
+    message = err.message;
   } else {
     message = "Something is probably wrong check back later";
   }

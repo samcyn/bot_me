@@ -10,6 +10,7 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-scripts": "2.0.5",
+    "simple-line-icons": "^2.4.1",
     "watson-speech": "^0.35.1"
   },
   "scripts": {

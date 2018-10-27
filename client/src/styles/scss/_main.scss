@@ -9,12 +9,13 @@
 // B A S E
 @import "./base/variables";
 @import "./base/typography";
+@import "./base/base.scss";
 
 // B U L M A
 // Import only what you need from Bulma
 @import "../../../node_modules/bulma/sass/utilities/_all.sass";
 @import "../../../node_modules/bulma/sass/base/_all.sass";
+@import "../../../node_modules/bulma/sass/elements/button.sass";
 @import "../../../node_modules/bulma/sass/elements/form.sass";
 @import "../../../node_modules/bulma/sass/components/navbar.sass";
 @import "../../../node_modules/bulma/sass/components/card.sass";
-

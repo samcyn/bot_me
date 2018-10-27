@@ -19,17 +19,23 @@
 }
 
 .bot__active .card {
-  background-color: $brand-white;
+  background-color: lighten($color: $brand-purple, $amount: 10%);
   height: auto;
   transition: all 0.3s linear;
   .card-header-title {
+    color: $brand-white !important;
+    padding-top: 24px !important;
     padding-bottom: 12px !important;
   }
   .card-content {
+    color: $brand-white !important;
     padding-top: 0 !important;
-  } 
+  }
   .card-header-icon {
     display: block;
+  }
+  .icon-close {
+    color: $brand-white;
   }
 }
 
@@ -43,12 +49,12 @@
   }
 }
 .card-header-title {
-  color: $brand-dark;
+  color: $brand-dark !important;
   font-family: $boldFont;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700 !important;
   line-height: 19px;
-  padding: 24px !important;
+  padding: 18px 24px !important;
   @media (max-width: 425px) {
     padding: 12px !important;
   }
@@ -57,8 +63,8 @@
 .card-header-icon {
   display: none;
 }
-.card-header-icon .icon-close{
-  color: #A2A2A2;
+.card-header-icon .icon-close {
+  color: #a2a2a2;
   font-size: 20px;
 }
 
