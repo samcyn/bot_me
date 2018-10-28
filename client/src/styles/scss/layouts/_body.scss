@@ -14,10 +14,10 @@
   height: 100vh;
   overflow: hidden;
   position: relative;
-  transition: all .33s cubic-bezier(.685,.0473,.346,1);
+  transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
   width: calc(100% - #{$tabPane});
   z-index: 5;
- 
+
   @media (max-width: 1087px) {
     width: 100%;
   }
@@ -60,7 +60,7 @@
   -webkit-overflow-scrolling: touch;
   @extend %scroll;
   @media (min-width: 1088px) {
-    padding: 29px 59px 29px 40px;    
+    padding: 29px 59px 29px 40px;
   }
 }
 
@@ -69,15 +69,26 @@
   box-shadow: 0 -1px 3px 0 rgba(231, 230, 230, 0.5);
   background-color: $brand-grey-n;
   height: $chatAreaHeight;
-  form : {
+  form {
     margin: 0;
+    position: relative;
+  }
+  .button {
+    position: absolute;
+    right: 32px;
+    transform: translateY(-50%);
+    top: 50%;
+    padding: 0 !important;
+  }
+  .icon-microphone {
+    font-size: 30px;
   }
   @media (max-width: 768px) {
     height: 80px;
   }
   padding: 12px;
   @media (min-width: 1088px) {
-    padding: 19px 59px 51px 40px;        
+    padding: 19px 59px 51px 40px;
   }
 }
 
@@ -86,4 +97,3 @@
 @import "../components/_userStatus.scss";
 @import "../components/_messages.scss";
 @import "../components/loader";
-

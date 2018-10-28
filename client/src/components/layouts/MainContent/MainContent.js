@@ -25,17 +25,20 @@ class MainContent extends Component {
       context: {},
       messageObjectList: [],
       isLoading: false,
-      textToken: null
+      textToken: null,
+      allowTextToSpeech: false,
+      allowSpeechToText: false
     };
     this.conversationHandler = this.conversationHandler.bind(this);
     this.generateTextToSpeechToken = this.generateTextToSpeechToken.bind(this);
+    this.textToSpeechTalkingHandler = this.textToSpeechTalkingHandler.bind(this);
   }
 
   // I N I T I A L - M E S S A G E
   async componentDidMount() {
     await this.generateTextToSpeechToken();
     const textToken = this.state.textToken;
-    this.conversationHandler("hi", this.addMessage, textToken);
+    this.conversationHandler("hi", this.addMessage, textToken, this.textToSpeechTalkingHandler);
   }
 
   addMessage = msgObj => {
@@ -44,7 +47,7 @@ class MainContent extends Component {
     });
   };
 
-  async conversationHandler(text, addMessage, textToken) {
+  async conversationHandler(text, addMessage, textToken, textToSpeechTalkingHandler) {
     // S T A R T - L O A D E R
     this.setState({ isLoading: true });
     try {
@@ -57,8 +60,7 @@ class MainContent extends Component {
       // R E S P O N S E - H A N D L E R - W A T S O N - C O N V E R S A T I O N;
       ResponseHandler(apiResponse, addMessage);
       // T E X T - T O - S P E E C H - H A N D L E R - W A T S O N;
-      TextToSpeechHandler(apiResponse, textToken);
-
+      TextToSpeechHandler(apiResponse, textToken, null, textToSpeechTalkingHandler);
     } catch (err) {
       // E R R O R - H A N D L E R;
       ErrorHandler(err);
@@ -74,9 +76,18 @@ class MainContent extends Component {
     }
   }
 
+  textToSpeechTalkingHandler (which) {
+    if (which === 'TTS') {
+      this.setState({allowTextToSpeech: true, allowSpeechToText: false});
+    }
+    else {
+      this.setState({ allowSpeechToText: true, allowTextToSpeech: false });
+    }
+  }
+
   render() {
     const { sideBarToggleHandler } = this.props;
-    const { messageObjectList, isLoading, textToken } = this.state;
+    const { messageObjectList, isLoading, textToken, allowTextToSpeech, allowSpeechToText } = this.state;
 
     return (
       <section className="bot__main">
@@ -85,18 +96,22 @@ class MainContent extends Component {
         <section className="bot__body">
           {/* M E S S A G E - P A N E L */}
           <MessagePanel
-            messages={messageObjectList}
-            conversationHandler={this.conversationHandler}
-            addMessage={this.addMessage}
-            isLoading={isLoading}
-            textToken={textToken}
+            messages = {messageObjectList}
+            conversationHandler = {this.conversationHandler}
+            addMessage = {this.addMessage}
+            isLoading = {isLoading}
+            textToken = {textToken}
+            textToSpeechTalkingHandler = {this.textToSpeechTalkingHandler}
           />
           {/* U S E R - T Y P E - I N P U T - H E R E */}
           <UserInput
-            addMessage={this.addMessage}
-            conversationHandler={this.conversationHandler}
-            isLoading={isLoading}
-            textToken={textToken}
+            addMessage = {this.addMessage}
+            conversationHandler = {this.conversationHandler}
+            isLoading = {isLoading}
+            textToken = {textToken}
+            allowTextToSpeech = {allowTextToSpeech}
+            allowSpeechToText = {allowSpeechToText}
+            textToSpeechTalkingHandler = {this.textToSpeechTalkingHandler}
           />
         </section>
       </section>
