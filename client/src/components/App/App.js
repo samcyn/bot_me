@@ -30,22 +30,13 @@ class App extends Component {
     });
   };
 
-  startRecordingAudio = () => {
-    this.setState(prevState => {
-      return {
-        isAudio: !prevState.isAudio
-      };
-    });
-  };
-
   
-
   render() {
     const { openSideBar } = this.state;
     return (
       <main className={openSideBar ? "bot openNav" : "bot"}>
         {/* S I D E B A R  */}
-        <SideBar startRecordingAudio={this.startRecordingAudio} />
+        <SideBar/>
         {/* <M A I N C O N T E N T  */}
         <MainContent sideBarToggleHandler={this.sideBarToggleHandler} />
       </main>

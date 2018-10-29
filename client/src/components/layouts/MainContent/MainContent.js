@@ -58,8 +58,6 @@ class MainContent extends Component {
 
   // T H I S - I S - T H E - H E A R T - O F - T H E - A P P L I C A T I O N
   async conversationHandler(text, addMessage, textToken) {
-    // E M P T Y - I N P U T - F I E L D;
-    this.setState({ text: "" });
 
     // S T A R T - L O A D E R
     this.setState({ isLoading: true });
@@ -70,11 +68,14 @@ class MainContent extends Component {
       // S T O P - L O A D E R
       this.setState({ isLoading: false });
 
+      // R E S P O N S E - H A N D L E R - W A T S O N - C O N V E R S A T I O N;
+      ResponseHandler(apiResponse, addMessage);
+
       // T E X T - T O - S P E E C H - H A N D L E R - W A T S O N;
       TextToSpeechHandler(apiResponse, textToken, null, this.handleMicClick);
 
-      // R E S P O N S E - H A N D L E R - W A T S O N - C O N V E R S A T I O N;
-      ResponseHandler(apiResponse, addMessage);
+      // E M P T Y - I N P U T - F I E L D;
+      this.setState({ text: "" });
     } catch (err) {
       // E R R O R - H A N D L E R;
       ErrorHandler(err, null);
@@ -84,8 +85,8 @@ class MainContent extends Component {
   // G E N E R A T E - S P E E C H - T O - T E X T - A N D - T E X T - T O - S P E E C H - T O K E N S
   async generateTokens() {
     try {
-      const token = await ApiServices.get("/text-to-speech/token");
       const tokenSTT = await ApiServices.get("/speech-to-text/token");
+      const token = await ApiServices.get("/text-to-speech/token");
 
       if (token) {
         this.setState({
@@ -95,6 +96,7 @@ class MainContent extends Component {
       }
     } catch (err) {
       console.log("TOKENS ", { err });
+      ErrorHandler(err, null);
     }
   }
 
@@ -224,6 +226,8 @@ class MainContent extends Component {
 
       // S E N D - R E Q U E S T;
       this.conversationHandler(text, this.addMessage, textToken);
+      // E M P T Y - I N P U T - F I E L D;
+      this.setState({ text: "" });
     }
   }
 

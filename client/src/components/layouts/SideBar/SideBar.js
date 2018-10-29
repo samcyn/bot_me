@@ -44,10 +44,9 @@ class SideBar extends Component {
 
   render() {
     const { currentIdSelected } = this.state;
-    const { startRecordingAudio } = this.props;
     return (
       <aside className="bot__aside">
-        <Header isSideBar={true} startRecordingAudio={startRecordingAudio}/>
+        <Header isSideBar={true}/>
         <section className="bot__aside-body">
           <div className="bot__aside-help-wrap">
             <img src={chat} alt="" />
