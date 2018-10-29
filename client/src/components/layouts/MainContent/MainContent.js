@@ -28,7 +28,8 @@ class MainContent extends Component {
       isLoading: false,
       textToken: null,
       speechToken: null,
-      audioSource: null
+      audioSource: null,
+      text: ""
     };
     this.conversationHandler = this.conversationHandler.bind(this);
     this.generateTokens = this.generateTokens.bind(this);
@@ -38,6 +39,7 @@ class MainContent extends Component {
     this.handleFormattedMessage = this.handleFormattedMessage.bind(this);
     this.handleStream = this.handleStream.bind(this);
     this.handleTranscriptEnd = this.handleTranscriptEnd.bind(this);
+    this.submitUserInputHandler=this.submitUserInputHandler.bind(this);
   }
 
   // I N I T I A L I Z E - M E S S A G E
@@ -77,14 +79,19 @@ class MainContent extends Component {
 
   // G E N E R A T E - S P E E C H - T O - T E X T - A N D - T E X T - T O - S P E E C H - T O K E N S
   async generateTokens() {
-    const token = await ApiServices.get("/text-to-speech/token");
-    const tokenSTT = await ApiServices.get("/speech-to-text/token");
+    try {
+      const token = await ApiServices.get("/text-to-speech/token");
+      const tokenSTT = await ApiServices.get("/speech-to-text/token");
 
-    if (token) {
-      this.setState({
-        textToken: token.data,
-        speechToken: tokenSTT.data
-      });
+      if (token) {
+        this.setState({
+          textToken: token.data,
+          speechToken: tokenSTT.data
+        });
+      }
+    } 
+    catch(err){
+      console.log("TOKENS ", {err});
     }
   }
 
@@ -97,7 +104,7 @@ class MainContent extends Component {
     this.reset();
     this.setState({ audioSource: "mic" });
 
-    if(this.state.speechToken) {
+    if (this.state.speechToken) {
       // I N I T I A L I Z E - A U D I O - R E C O R D I N G
       const stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
         token: this.state.speechToken,
@@ -160,8 +167,9 @@ class MainContent extends Component {
         new RegExp("%HESITATION", "gi"),
         "!" // R E P L A C E - A L L - % H E S I T A T I O N - W I T H - E X C L A M A T I O N - M A R K
       );
+      this.setState({text});
       // C O N F I D E N C E - L E V E L - C H E C K
-      if (msg.alternatives[0].confidence > 0.75) {
+      if (msg.alternatives[0].confidence > 0.25) {
         const outputMessage = {
           position: "right",
           message: text,
@@ -189,9 +197,45 @@ class MainContent extends Component {
     this.setState({ audioSource: null });
   }
 
+  // I N P U T - H A N D L E R - U S E D - T O - S E T - S T A T E
+  inputOnChangeHandler = ({ target: { value } }) => {
+    this.setState({
+      text: value
+    });
+  };
+
+  // O N - S U B M I T - O F - F O R M
+  submitUserInputHandler() {
+    const { isLoading, textToken, text } = this.state;
+    // I F - T E X T - I S - N O T - E M P T Y - A N D - S E R V E R - I S - N O T - B U S Y
+    if (text !== "" && !isLoading) {
+      const outputDate = new Date().toLocaleTimeString();
+      const outputMessage = {
+        position: "right",
+        message: text,
+        date: outputDate,
+        hasTail: true
+      };
+      // A D D - U S E R - I N P U T - T O - T H E - P A N E L
+      this.addMessage(outputMessage);
+
+      // E M P T Y - I N P U T - F I E L D;
+      this.setState({ text: "" });
+
+      // S E N D - R E Q U E S T;
+      this.conversationHandler(text, this.addMessage, textToken);
+    }
+  }
+
   render() {
     const { sideBarToggleHandler } = this.props;
-    const { messageObjectList, isLoading, textToken, audioSource } = this.state;
+    const {
+      messageObjectList,
+      isLoading,
+      textToken,
+      audioSource,
+      text
+    } = this.state;
 
     return (
       <section className="bot__main">
@@ -214,6 +258,9 @@ class MainContent extends Component {
             textToken={textToken}
             audioSource={audioSource}
             handleMicClick={this.handleMicClick}
+            text={text}
+            inputOnChangeHandler={this.inputOnChangeHandler}
+            submitUserInputHandler={this.submitUserInputHandler}
           />
         </section>
       </section>
