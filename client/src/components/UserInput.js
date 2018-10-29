@@ -72,13 +72,7 @@ class UserInput extends Component {
             className="button is-transparent is-borderless is-shadowless"
             onClick={handleMicClick}
           >
-            <i
-              className={
-                audioSource
-                  ? "icon-microphone has-text-danger"
-                  : "icon-microphone has-text-primary"
-              }
-            />
+            <i className={ audioSource ? "icon-microphone has-text-danger" : "icon-microphone has-text-primary"}/>
           </button>
         </form>
       </div>

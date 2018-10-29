@@ -10,6 +10,7 @@ import React, { Component } from "react";
 import Header from "../Header/Header";
 
 import botServices from "../../../utils/botServices";
+import chat from "../../../assets/chat.png";
 import "./SideBar.css";
 
 const servicesAvailable = botServices || [];
@@ -49,7 +50,7 @@ class SideBar extends Component {
         <Header isSideBar={true} startRecordingAudio={startRecordingAudio}/>
         <section className="bot__aside-body">
           <div className="bot__aside-help-wrap">
-            <img src="assets/img/Group 2.png" alt="" />
+            <img src={chat} alt="" />
             <h3 className="bot__aside-help">Help</h3>
           </div>
           <hr className="bot__hr" />

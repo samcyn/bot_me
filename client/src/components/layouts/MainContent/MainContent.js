@@ -38,7 +38,6 @@ class MainContent extends Component {
     this.handleFormattedMessage = this.handleFormattedMessage.bind(this);
     this.handleStream = this.handleStream.bind(this);
     this.handleTranscriptEnd = this.handleTranscriptEnd.bind(this);
-    this.handleError = this.handleError.bind(this);
   }
 
   // I N I T I A L I Z E - M E S S A G E
@@ -97,15 +96,18 @@ class MainContent extends Component {
     }
     this.reset();
     this.setState({ audioSource: "mic" });
-    // I N I T I A L I Z E - A U D I O - R E C O R D I N G
-    const stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
-      token: this.state.speechToken,
-      extractResults: true,
-      inactivity_timeout: 5,
-      format: false,
-      keepMicrophone: true
-    });
-    this.handleStream(stream);
+
+    if(this.state.speechToken) {
+      // I N I T I A L I Z E - A U D I O - R E C O R D I N G
+      const stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
+        token: this.state.speechToken,
+        extractResults: true,
+        inactivity_timeout: 5,
+        format: false,
+        keepMicrophone: true
+      });
+      this.handleStream(stream);
+    }
   }
 
   // E N D - S T R E A M

@@ -26,7 +26,7 @@ class Header extends Component {
   }
 
   render() {
-    const { isSideBar, startRecordingAudio, sideBarToggleHandler } = this.props;
+    const { isSideBar, sideBarToggleHandler } = this.props;
     const { openDropDown } = this.state;
     return (
       <header className="bot__header">
@@ -39,7 +39,7 @@ class Header extends Component {
           >
             <div className="navbar-brand">
               <div className="navbar-item" href="#">
-                <h2 className="bot__aside-title">My Homie</h2>
+                <h2 className="bot__aside-title">N.S.E Bot</h2>
               </div>
             </div>
             <div className="navbar-menu is-active">
@@ -52,11 +52,9 @@ class Header extends Component {
                   <div className={ openDropDown ? "dropdown" : "dropdown is-hidden"}>
                     <a
                       className="navbar-item has-text-primary"
-                      onClick={startRecordingAudio}
                     >
-                      Record
+                      Updates/ReadMe available soon
                     </a>
-                    <a className="navbar-item has-text-primary">Read</a>
                   </div>
                 </div>
               </div>
