@@ -7,7 +7,7 @@
  */
 
 const ErrorHandler = (err, extra) => {
-  console.log({ err }, extra);
+  // console.log({ err }, extra);
   let message;
   if (err && err.response) {
     if (err.response.status === 500 || err.response.status === 404) {
@@ -31,6 +31,7 @@ const ErrorHandler = (err, extra) => {
     message = "Something is probably wrong check back later";
   }
   console.log(message, err.code);
+  // alert(message);
 };
 
 module.exports = ErrorHandler;

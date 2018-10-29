@@ -39,7 +39,7 @@ class MainContent extends Component {
     this.handleFormattedMessage = this.handleFormattedMessage.bind(this);
     this.handleStream = this.handleStream.bind(this);
     this.handleTranscriptEnd = this.handleTranscriptEnd.bind(this);
-    this.submitUserInputHandler=this.submitUserInputHandler.bind(this);
+    this.submitUserInputHandler = this.submitUserInputHandler.bind(this);
   }
 
   // I N I T I A L I Z E - M E S S A G E
@@ -58,6 +58,9 @@ class MainContent extends Component {
 
   // T H I S - I S - T H E - H E A R T - O F - T H E - A P P L I C A T I O N
   async conversationHandler(text, addMessage, textToken) {
+    // E M P T Y - I N P U T - F I E L D;
+    this.setState({ text: "" });
+
     // S T A R T - L O A D E R
     this.setState({ isLoading: true });
     try {
@@ -67,13 +70,14 @@ class MainContent extends Component {
       // S T O P - L O A D E R
       this.setState({ isLoading: false });
 
-      // R E S P O N S E - H A N D L E R - W A T S O N - C O N V E R S A T I O N;
-      ResponseHandler(apiResponse, addMessage);
       // T E X T - T O - S P E E C H - H A N D L E R - W A T S O N;
       TextToSpeechHandler(apiResponse, textToken, null, this.handleMicClick);
+
+      // R E S P O N S E - H A N D L E R - W A T S O N - C O N V E R S A T I O N;
+      ResponseHandler(apiResponse, addMessage);
     } catch (err) {
       // E R R O R - H A N D L E R;
-      ErrorHandler(err);
+      ErrorHandler(err, null);
     }
   }
 
@@ -89,9 +93,8 @@ class MainContent extends Component {
           speechToken: tokenSTT.data
         });
       }
-    } 
-    catch(err){
-      console.log("TOKENS ", {err});
+    } catch (err) {
+      console.log("TOKENS ", { err });
     }
   }
 
@@ -147,7 +150,7 @@ class MainContent extends Component {
     stream
       .on("data", this.handleFormattedMessage)
       .on("end", this.handleTranscriptEnd)
-      .on("error", ErrorHandler);
+      .on("error", (err, extra) => ErrorHandler(err, extra));
 
     stream.recognizeStream.on("end", () => {
       if (this.state.error) {
@@ -167,7 +170,7 @@ class MainContent extends Component {
         new RegExp("%HESITATION", "gi"),
         "!" // R E P L A C E - A L L - % H E S I T A T I O N - W I T H - E X C L A M A T I O N - M A R K
       );
-      this.setState({text});
+      this.setState({ text });
       // C O N F I D E N C E - L E V E L - C H E C K
       if (msg.alternatives[0].confidence > 0.25) {
         const outputMessage = {
@@ -218,9 +221,6 @@ class MainContent extends Component {
       };
       // A D D - U S E R - I N P U T - T O - T H E - P A N E L
       this.addMessage(outputMessage);
-
-      // E M P T Y - I N P U T - F I E L D;
-      this.setState({ text: "" });
 
       // S E N D - R E Q U E S T;
       this.conversationHandler(text, this.addMessage, textToken);
