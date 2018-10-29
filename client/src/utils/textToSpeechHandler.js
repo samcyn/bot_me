@@ -14,9 +14,11 @@ let audio = null;
 let textMessage = [];
 
 // F U N C T I O N - T H A T - W I L L - T A K E - I N - A R R A Y - O F - T E X T - M E S S A G E S - A N D - A - V E R I F I E D - T O K E N
-const startTalking = (message, token, textToSpeechTalkingHandler) => {
+const startTalking = (message, token, handleMic) => {
   // S T R I N G - T H A T - W I L L - B E - R E A D - O U T - L O U D
   let textString = "";
+  // R E S E T - M I C - S T O P - M I C - M O M E N T A R I L Y
+  handleMic();
   // I F - A U D I O - I S - O N - A L R E A D Y - N O - N E E D - R E A D I N G - P R E V I O U S - M E S S G A E S - J U M P - T O - A - N E W - O N E
   if (audio !== null && !audio.ended) {
     // P A U S E - P R E V I O U S - A U D I O - M E S S A G E S
@@ -35,12 +37,12 @@ const startTalking = (message, token, textToSpeechTalkingHandler) => {
     autoPlay: true, // Automatically plays audio
     token: token
   });
-  textToSpeechTalkingHandler("TTS");
 
   // I T'S - I M P O R T A N T - T O - C L E A R - T H E - A R R A Y - O N C E - M E S S A G E S - A R E - A L L - R E A D
   audio.onended = function() {
     textMessage = [];
-    textToSpeechTalkingHandler("STT");
+    // T U R N - U P - M I C - A G A I N
+    handleMic();
   };
 };
 
@@ -48,7 +50,7 @@ const TextToSpeechHandler = (
   apiResponseFromWatsonConversation,
   token,
   readPromptMessage,
-  textToSpeechTalkingHandler
+  handleMic
 ) => {
   if (apiResponseFromWatsonConversation) {
     const { output } = apiResponseFromWatsonConversation.data;
@@ -71,11 +73,11 @@ const TextToSpeechHandler = (
     // I F - A R R A Y - I S - E M P T Y - N O T H I N G - TO - R E A D
     if (textMessage.length > 0) {
       // S T A R T - S P E A K I N G
-      startTalking(textMessage, token, textToSpeechTalkingHandler);
+      startTalking(textMessage, token, handleMic);
     }
   } else if (readPromptMessage) {
     textMessage.push(readPromptMessage);
-    startTalking(textMessage, token, textToSpeechTalkingHandler);
+    startTalking(textMessage, token, handleMic);
   }
 };
 

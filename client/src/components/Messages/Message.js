@@ -9,7 +9,7 @@
 import React from "react";
 import Loader from "../Loader/Loader";
 
-const OptionsHTMLBuild = ({ newMessage, addMessage, conversationHandler, token, textToSpeechTalkingHandler }) => {
+const OptionsHTMLBuild = ({ newMessage, addMessage, conversationHandler, token }) => {
   const sendOptionValue = message => {
     const text = message.value.input.text;
     const outputDate = new Date().toLocaleTimeString();
@@ -23,7 +23,7 @@ const OptionsHTMLBuild = ({ newMessage, addMessage, conversationHandler, token, 
     addMessage(outputMessage);
 
     // S E N D - R E Q U E S T;
-    conversationHandler(text, addMessage, token, textToSpeechTalkingHandler);
+    conversationHandler(text, addMessage, token);
   };
 
   return (
@@ -40,7 +40,7 @@ const OptionsHTMLBuild = ({ newMessage, addMessage, conversationHandler, token, 
   );
 };
 
-const Message = ({ newMessage, conversationHandler, addMessage, token, isLoading, textToSpeechTalkingHandler }) => {
+const Message = ({ newMessage, conversationHandler, addMessage, token, isLoading }) => {
   const { position, message } = newMessage;
   return (
     // D E C I D E - W H I C H - C L A S S - I F - S E R V E R - I S - B U S Y
@@ -77,7 +77,6 @@ const Message = ({ newMessage, conversationHandler, addMessage, token, isLoading
                 newMessage={message}
                 addMessage={addMessage}
                 conversationHandler={conversationHandler}
-                textToSpeechTalkingHandler={textToSpeechTalkingHandler}
                 token={token}
               />
             )}

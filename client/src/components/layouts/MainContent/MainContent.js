@@ -7,6 +7,7 @@
  */
 
 import React, { Component } from "react";
+import WatsonSpeech from "watson-speech";
 import Header from "../Header/Header";
 import UserInput from "../../UserInput";
 import MessagePanel from "../../Messages/MessagePanel";
@@ -26,28 +27,36 @@ class MainContent extends Component {
       messageObjectList: [],
       isLoading: false,
       textToken: null,
-      allowTextToSpeech: false,
-      allowSpeechToText: false
+      speechToken: null,
+      audioSource: null
     };
     this.conversationHandler = this.conversationHandler.bind(this);
-    this.generateTextToSpeechToken = this.generateTextToSpeechToken.bind(this);
-    this.textToSpeechTalkingHandler = this.textToSpeechTalkingHandler.bind(this);
+    this.generateTokens = this.generateTokens.bind(this);
+    this.handleMicClick = this.handleMicClick.bind(this);
+    this.stopTranscription = this.stopTranscription.bind(this);
+    this.reset = this.reset.bind(this);
+    this.handleFormattedMessage = this.handleFormattedMessage.bind(this);
+    this.handleStream = this.handleStream.bind(this);
+    this.handleTranscriptEnd = this.handleTranscriptEnd.bind(this);
+    this.handleError = this.handleError.bind(this);
   }
 
-  // I N I T I A L - M E S S A G E
+  // I N I T I A L I Z E - M E S S A G E
   async componentDidMount() {
-    await this.generateTextToSpeechToken();
+    await this.generateTokens();
     const textToken = this.state.textToken;
-    this.conversationHandler("hi", this.addMessage, textToken, this.textToSpeechTalkingHandler);
+    this.conversationHandler("hi", this.addMessage, textToken);
   }
 
+  // A D D - M E S S A G E - T O - T H E - P A N E L
   addMessage = msgObj => {
     this.setState({
       messageObjectList: [...this.state.messageObjectList, msgObj]
     });
   };
 
-  async conversationHandler(text, addMessage, textToken, textToSpeechTalkingHandler) {
+  // T H I S - I S - T H E - H E A R T - O F - T H E - A P P L I C A T I O N
+  async conversationHandler(text, addMessage, textToken) {
     // S T A R T - L O A D E R
     this.setState({ isLoading: true });
     try {
@@ -60,34 +69,127 @@ class MainContent extends Component {
       // R E S P O N S E - H A N D L E R - W A T S O N - C O N V E R S A T I O N;
       ResponseHandler(apiResponse, addMessage);
       // T E X T - T O - S P E E C H - H A N D L E R - W A T S O N;
-      TextToSpeechHandler(apiResponse, textToken, null, textToSpeechTalkingHandler);
+      TextToSpeechHandler(apiResponse, textToken, null, this.handleMicClick);
     } catch (err) {
       // E R R O R - H A N D L E R;
       ErrorHandler(err);
     }
   }
 
-  async generateTextToSpeechToken() {
+  // G E N E R A T E - S P E E C H - T O - T E X T - A N D - T E X T - T O - S P E E C H - T O K E N S
+  async generateTokens() {
     const token = await ApiServices.get("/text-to-speech/token");
+    const tokenSTT = await ApiServices.get("/speech-to-text/token");
+
     if (token) {
       this.setState({
-        textToken: token.data
+        textToken: token.data,
+        speechToken: tokenSTT.data
       });
     }
   }
 
-  textToSpeechTalkingHandler (which) {
-    if (which === 'TTS') {
-      this.setState({allowTextToSpeech: true, allowSpeechToText: false});
+  // TO G G L E - M I C - U S E A G E
+  handleMicClick() {
+    if (this.state.audioSource === "mic") {
+      this.stopTranscription();
+      return;
     }
-    else {
-      this.setState({ allowSpeechToText: true, allowTextToSpeech: false });
+    this.reset();
+    this.setState({ audioSource: "mic" });
+    // I N I T I A L I Z E - A U D I O - R E C O R D I N G
+    const stream = WatsonSpeech.SpeechToText.recognizeMicrophone({
+      token: this.state.speechToken,
+      extractResults: true,
+      inactivity_timeout: 5,
+      format: false,
+      keepMicrophone: true
+    });
+    this.handleStream(stream);
+  }
+
+  // E N D - S T R E A M
+  stopTranscription() {
+    if (this.stream) {
+      this.stream.stop();
+      this.stream.removeAllListeners();
+      this.stream.recognizeStream.removeAllListeners();
     }
+    this.setState({ audioSource: null });
+  }
+
+  // R E S E T - A U D I O S O U R C E
+  reset() {
+    if (this.state.audioSource) {
+      this.stopTranscription();
+    }
+  }
+
+  // H A N D L E - S T R E A M
+  handleStream(stream) {
+    console.log(stream);
+    if (this.stream) {
+      this.stream.stop();
+      this.stream.removeAllListeners();
+      this.stream.recognizeStream.removeAllListeners();
+    }
+    this.stream = stream;
+
+    stream
+      .on("data", this.handleFormattedMessage)
+      .on("end", this.handleTranscriptEnd)
+      .on("error", ErrorHandler);
+
+    stream.recognizeStream.on("end", () => {
+      if (this.state.error) {
+        this.handleTranscriptEnd();
+      }
+    });
+  }
+
+  // F O R M A T - W A T S O N - S P E E C H - T O - T E X T - R E S U L T
+  handleFormattedMessage(msg) {
+    const { isLoading, textToken } = this.state;
+    const outputDate = new Date().toLocaleTimeString();
+    //I F - U S E R - I S - D O N E - T A L K I N G - A N D - W A T S O N - C O N V E R S A T I O N - S E R V E R - I S N 'T - B U S Y - A N D - T E X T - T O - S P E E C H - I S N 'T - T A L K I N G
+    if (msg && msg.final && !isLoading) {
+      // U S E R 'S - V O I C E - I N - T E X T
+      const text = msg.alternatives[0].transcript.replace(
+        new RegExp("%HESITATION", "gi"),
+        "!" // R E P L A C E - A L L - % H E S I T A T I O N - W I T H - E X C L A M A T I O N - M A R K
+      );
+      // C O N F I D E N C E - L E V E L - C H E C K
+      if (msg.alternatives[0].confidence > 0.75) {
+        const outputMessage = {
+          position: "right",
+          message: text,
+          date: outputDate,
+          hasTail: true
+        };
+        this.addMessage(outputMessage);
+        this.conversationHandler(text, this.addMessage, this.state.textToken);
+      } else {
+        const message = "I did'nt get.. say it again!";
+        const outputMessage = {
+          position: "left",
+          message,
+          date: outputDate,
+          hasTail: true
+        };
+        this.addMessage(outputMessage);
+        // R E A D - P R O M P T - M E S S A G E - T O - U S E R - S I N C E - T H I S - I S - N O T - A P I - C A L L - T O - W A T S I O N - F I R S T - A R G U M E N T - I S - N U L L
+        TextToSpeechHandler(null, textToken, message, this.handleMicClick);
+      }
+    }
+  }
+
+  handleTranscriptEnd() {
+    this.setState({ audioSource: null });
   }
 
   render() {
     const { sideBarToggleHandler } = this.props;
-    const { messageObjectList, isLoading, textToken, allowTextToSpeech, allowSpeechToText } = this.state;
+    const { messageObjectList, isLoading, textToken, audioSource } = this.state;
 
     return (
       <section className="bot__main">
@@ -96,22 +198,20 @@ class MainContent extends Component {
         <section className="bot__body">
           {/* M E S S A G E - P A N E L */}
           <MessagePanel
-            messages = {messageObjectList}
-            conversationHandler = {this.conversationHandler}
-            addMessage = {this.addMessage}
-            isLoading = {isLoading}
-            textToken = {textToken}
-            textToSpeechTalkingHandler = {this.textToSpeechTalkingHandler}
+            messages={messageObjectList}
+            conversationHandler={this.conversationHandler}
+            addMessage={this.addMessage}
+            isLoading={isLoading}
+            textToken={textToken}
           />
           {/* U S E R - T Y P E - I N P U T - H E R E */}
           <UserInput
-            addMessage = {this.addMessage}
-            conversationHandler = {this.conversationHandler}
-            isLoading = {isLoading}
-            textToken = {textToken}
-            allowTextToSpeech = {allowTextToSpeech}
-            allowSpeechToText = {allowSpeechToText}
-            textToSpeechTalkingHandler = {this.textToSpeechTalkingHandler}
+            addMessage={this.addMessage}
+            conversationHandler={this.conversationHandler}
+            isLoading={isLoading}
+            textToken={textToken}
+            audioSource={audioSource}
+            handleMicClick={this.handleMicClick}
           />
         </section>
       </section>
