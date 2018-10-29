@@ -1,0 +1,17 @@
+PORT=4000
+########## CONVERSATION ########################
+WORKSPACE_ID=
+ASSISTANT_USERNAME=
+ASSISTANT_PASSWORD=
+
+
+########## SPEECH TO TEXT #########################
+SPEECH_TO_TEXT_USERNAME=
+SPEECH_TO_TEXT_PASSWORD=
+SPEECH_TO_TEXT_URL=https://stream.watsonplatform.net/speech-to-text/api
+
+
+########## TEXT TO SPEECH #########################
+TEXT_TO_SPEECH_USERNAME=
+TEXT_TO_SPEECH_PASSWORD=
+TEXT_TO_SPEECH_URL=https://stream.watsonplatform.net/text-to-speech/api
