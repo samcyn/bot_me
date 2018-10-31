@@ -208,6 +208,8 @@ class MainContent extends Component {
           hasTail: true
         };
         this.addMessage(outputMessage);
+        // T U R N - T H E - M I C - B E F O R E - C A L L I N G - T E X T - T O - S P E E C H - S E R V I C E
+        this.handleMicClick();
         // R E A D - P R O M P T - M E S S A G E - T O - U S E R - S I N C E - T H I S - I S - N O T - A P I - C A L L - T O - W A T S I O N - F I R S T - A R G U M E N T - I S - N U L L
         TextToSpeechHandler(null, textToken, message, this.handleMicClick);
       }
