@@ -46,7 +46,9 @@ class MainContent extends Component {
   async componentDidMount() {
     await this.generateTokens();
     const textToken = this.state.textToken;
-    this.conversationHandler("hi", this.addMessage, textToken);
+    if (textToken) {
+      this.conversationHandler("hi", this.addMessage, textToken);
+    }
   }
 
   // A D D - M E S S A G E - T O - T H E - P A N E L
@@ -58,7 +60,6 @@ class MainContent extends Component {
 
   // T H I S - I S - T H E - H E A R T - O F - T H E - A P P L I C A T I O N
   async conversationHandler(text, addMessage, textToken) {
-
     // S T A R T - L O A D E R
     this.setState({ isLoading: true });
     try {
@@ -71,11 +72,14 @@ class MainContent extends Component {
       // R E S P O N S E - H A N D L E R - W A T S O N - C O N V E R S A T I O N;
       ResponseHandler(apiResponse, addMessage);
 
+      // T U R N - T H E - M I C - B E F O R E - C A L L I N G - T E X T - T O - S P E E C H - S E R V I C E
+      this.handleMicClick();
+
       // T E X T - T O - S P E E C H - H A N D L E R - W A T S O N;
       TextToSpeechHandler(apiResponse, textToken, null, this.handleMicClick);
 
-      // E M P T Y - I N P U T - F I E L D;
-      this.setState({ text: "" });
+      //  E M P T Y - I N P U T - F I E L D - THIS IS USEFUL IF YOU DONT WANT USER TO;
+      // this.setState({ text: "" });
     } catch (err) {
       // E R R O R - H A N D L E R;
       ErrorHandler(err, null);
@@ -85,14 +89,25 @@ class MainContent extends Component {
   // G E N E R A T E - S P E E C H - T O - T E X T - A N D - T E X T - T O - S P E E C H - T O K E N S
   async generateTokens() {
     try {
-      const tokenSTT = await ApiServices.get("/speech-to-text/token");
-      const token = await ApiServices.get("/text-to-speech/token");
-
-      if (token) {
+      const textTokenLocal = localStorage.getItem("textToken");
+      const speechTokenLocal = localStorage.getItem("speechToken");
+      if (textTokenLocal && speechTokenLocal) {
         this.setState({
-          textToken: token.data,
-          speechToken: tokenSTT.data
+          textToken: textTokenLocal,
+          speechToken: speechTokenLocal
         });
+      } else {
+        const token = await ApiServices.get("/text-to-speech/token");
+        const tokenSTT = await ApiServices.get("/speech-to-text/token");
+
+        if (tokenSTT) {
+          this.setState({
+            textToken: token.data,
+            speechToken: tokenSTT.data
+          });
+          localStorage.setItem("textToken", token.data);
+          localStorage.setItem("speechToken", tokenSTT.data);
+        }
       }
     } catch (err) {
       console.log("TOKENS ", { err });
@@ -141,7 +156,7 @@ class MainContent extends Component {
 
   // H A N D L E - S T R E A M
   handleStream(stream) {
-    console.log(stream);
+    // console.log(stream);
     if (this.stream) {
       this.stream.stop();
       this.stream.removeAllListeners();
@@ -165,16 +180,17 @@ class MainContent extends Component {
   handleFormattedMessage(msg) {
     const { isLoading, textToken } = this.state;
     const outputDate = new Date().toLocaleTimeString();
-    //I F - U S E R - I S - D O N E - T A L K I N G - A N D - W A T S O N - C O N V E R S A T I O N - S E R V E R - I S N 'T - B U S Y - A N D - T E X T - T O - S P E E C H - I S N 'T - T A L K I N G
-    if (msg && msg.final && !isLoading) {
+    // C H E C K - W H E N - U S E R - I S - D O N E - T A L K I N G..- P R O B A B L Y - D O N E - T A L K I N G
+    if (msg.final) {
       // U S E R 'S - V O I C E - I N - T E X T
       const text = msg.alternatives[0].transcript.replace(
         new RegExp("%HESITATION", "gi"),
         "!" // R E P L A C E - A L L - % H E S I T A T I O N - W I T H - E X C L A M A T I O N - M A R K
       );
       this.setState({ text });
-      // C O N F I D E N C E - L E V E L - C H E C K
-      if (msg.alternatives[0].confidence > 0.25) {
+      //I F - U S E R - I S - D O N E - T A L K I N G - A N D - W A T S O N - C O N V E R S A T I O N - S E R V E R - I S N 'T - B U S Y - A N D - T E X T - T O - S P E E C H - I S N 'T - T A L K I N G
+      // C O N F I D E N C E - L E V E L - C H E C K - A L S O
+      if (msg.alternatives[0].confidence > 0.25 && text !== "" && !isLoading) {
         const outputMessage = {
           position: "right",
           message: text,

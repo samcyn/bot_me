@@ -58,7 +58,7 @@ module.exports = function(app) {
       }
       console.log(data);
       // update response before sending to client....
-      return res.json(updateMessage(payload, data));
+      return res.json(data);
     });
   });
 };
