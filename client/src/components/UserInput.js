@@ -41,6 +41,7 @@ class UserInput extends Component {
             onChange={inputOnChangeHandler}
           />
           <button
+            type="button"
             className="button is-transparent is-borderless is-shadowless"
             onClick={handleMicClick}
           >

@@ -15,7 +15,7 @@ import "./SideBar.css";
 
 const servicesAvailable = botServices || [];
 
-const ListItem = ({id, title, content, active, openUpCardContent }) => (
+const ListItem = ({id, title, content, active, keywords, openUpCardContent }) => (
   <li className={active ? "bot__items bot__active" : "bot__items"} onClick={ () => openUpCardContent(id) }>
     <div className="card">
       <div className="card-header">
@@ -26,7 +26,17 @@ const ListItem = ({id, title, content, active, openUpCardContent }) => (
           </span>
         </a>
       </div>
-      <div className="card-content">{content}</div>
+      <div className="card-content">
+        <div>{content}</div>
+        
+        <ul className="bot-lists">
+          {
+            keywords && keywords.map(keyword => (
+              <li class="bot-item-link" key={keyword}> {keyword}</li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </li>
 );
@@ -61,8 +71,8 @@ class SideBar extends Component {
           </p>
 
           <ul className="bots__list" id="bots__list">
-            {servicesAvailable.map(({_id, title, content }) => (
-              <ListItem id={_id} active={ currentIdSelected === _id } title={title} content={content} key={_id} openUpCardContent={ this.openUpCardContent }/>
+            {servicesAvailable.map(({_id, title, content, keywords }) => (
+              <ListItem id={_id} active={ currentIdSelected === _id } title={title} content={content} key={_id} keywords={keywords} openUpCardContent={ this.openUpCardContent }/>
             ))}
           </ul>
         </section>

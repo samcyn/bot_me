@@ -9,8 +9,6 @@
 .circles {
   align-items: center;
   border-radius: 100%;
-  background-color:$brand-purple;
-  color: $brand-white;
   display: flex;
   flex: 0 0 32px;
   font-family: $boldFont;
@@ -23,6 +21,4 @@
 
 .circles__letter {
   line-height: 20px;
-  height: 16px;
 }
-

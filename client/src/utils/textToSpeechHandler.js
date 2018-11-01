@@ -17,8 +17,7 @@ let textMessage = [];
 const startTalking = (message, token, handleMic) => {
   // S T R I N G - T H A T - W I L L - B E - R E A D - O U T - L O U D
   let textString = "";
-  // R E S E T - M I C - S T O P - M I C - M O M E N T A R I L Y
-  handleMic();
+  
   // I F - A U D I O - I S - O N - A L R E A D Y - N O - N E E D - R E A D I N G - P R E V I O U S - M E S S G A E S - J U M P - T O - A - N E W - O N E
   if (audio !== null && !audio.ended) {
     // P A U S E - P R E V I O U S - A U D I O - M E S S A G E S
@@ -66,6 +65,9 @@ const TextToSpeechHandler = (
         data.options.forEach(option => {
           batchMessages += option.label + " <break time='0.2s'/>";
         });
+      }
+      if (data && data.response_type === "_html") {
+        batchMessages += data.text + " <break time='0.2s'/>";
       }
     });
 

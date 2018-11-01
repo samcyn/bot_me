@@ -36,7 +36,6 @@
 
 .bot__aside-body {
   background-color: $brand-grey-n;
-  border: 2px solid $brand-grey-m;
   height: calc(100% - #{$headerHeight});
   padding: 12px;
   overflow-y: scroll;
@@ -74,6 +73,10 @@
 }
 
 @import "../components/_card.scss";
+
+.bot-lists {
+  margin-top: 20px;
+}
 
 .bot__items {
   margin-bottom: 16px;

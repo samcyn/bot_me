@@ -58,9 +58,6 @@ class MainContent extends Component {
 
   // T H I S - I S - T H E - H E A R T - O F - T H E - A P P L I C A T I O N
   async conversationHandler(text, addMessage, textToken) {
-    // E M P T Y - I N P U T - F I E L D;
-    this.setState({ text: "" });
-
     // S T A R T - L O A D E R
     this.setState({ isLoading: true });
     try {
@@ -70,11 +67,17 @@ class MainContent extends Component {
       // S T O P - L O A D E R
       this.setState({ isLoading: false });
 
+      // R E S P O N S E - H A N D L E R - W A T S O N - C O N V E R S A T I O N;
+      ResponseHandler(apiResponse, addMessage);
+
+      // T U R N - T H E - M I C - B E F O R E - C A L L I N G - T E X T - T O - S P E E C H - S E R V I C E
+      this.handleMicClick();
+
       // T E X T - T O - S P E E C H - H A N D L E R - W A T S O N;
       TextToSpeechHandler(apiResponse, textToken, null, this.handleMicClick);
 
-      // R E S P O N S E - H A N D L E R - W A T S O N - C O N V E R S A T I O N;
-      ResponseHandler(apiResponse, addMessage);
+      //  E M P T Y - I N P U T - F I E L D - THIS IS USEFUL IF YOU DONT WANT USER TO;
+      // this.setState({ text: "" });
     } catch (err) {
       // E R R O R - H A N D L E R;
       ErrorHandler(err, null);
@@ -163,16 +166,17 @@ class MainContent extends Component {
   handleFormattedMessage(msg) {
     const { isLoading, textToken } = this.state;
     const outputDate = new Date().toLocaleTimeString();
-    //I F - U S E R - I S - D O N E - T A L K I N G - A N D - W A T S O N - C O N V E R S A T I O N - S E R V E R - I S N 'T - B U S Y - A N D - T E X T - T O - S P E E C H - I S N 'T - T A L K I N G
-    if (msg && msg.final && !isLoading) {
+    // C H E C K - W H E N - U S E R - I S - D O N E - T A L K I N G..- P R O B A B L Y - D O N E - T A L K I N G
+    if (msg.final) {
       // U S E R 'S - V O I C E - I N - T E X T
       const text = msg.alternatives[0].transcript.replace(
         new RegExp("%HESITATION", "gi"),
         "!" // R E P L A C E - A L L - % H E S I T A T I O N - W I T H - E X C L A M A T I O N - M A R K
       );
       this.setState({ text });
-      // C O N F I D E N C E - L E V E L - C H E C K
-      if (msg.alternatives[0].confidence > 0.25) {
+      //I F - U S E R - I S - D O N E - T A L K I N G - A N D - W A T S O N - C O N V E R S A T I O N - S E R V E R - I S N 'T - B U S Y - A N D - T E X T - T O - S P E E C H - I S N 'T - T A L K I N G
+      // C O N F I D E N C E - L E V E L - C H E C K - A L S O
+      if (msg.alternatives[0].confidence > 0.25 && text !== "" && !isLoading) {
         const outputMessage = {
           position: "right",
           message: text,
@@ -190,6 +194,8 @@ class MainContent extends Component {
           hasTail: true
         };
         this.addMessage(outputMessage);
+        // T U R N - T H E - M I C - B E F O R E - C A L L I N G - T E X T - T O - S P E E C H - S E R V I C E
+        this.handleMicClick();
         // R E A D - P R O M P T - M E S S A G E - T O - U S E R - S I N C E - T H I S - I S - N O T - A P I - C A L L - T O - W A T S I O N - F I R S T - A R G U M E N T - I S - N U L L
         TextToSpeechHandler(null, textToken, message, this.handleMicClick);
       }
@@ -224,6 +230,8 @@ class MainContent extends Component {
 
       // S E N D - R E Q U E S T;
       this.conversationHandler(text, this.addMessage, textToken);
+      // E M P T Y - I N P U T - F I E L D;
+      this.setState({ text: "" });
     }
   }
 

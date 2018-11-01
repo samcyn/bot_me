@@ -7,12 +7,15 @@
  */
 
 // C O L O U R S
-$brand-purple: #a8ac2e;
+$brand-primary: #2c2f75;
 $brand-grey: #e8ede9;
-$brand-grey-n: #f8f8f8;
+$brand-grey-n: #F7F7F9;
 $brand-grey-o: #e6e6e6;
 $brand-grey-m: #ededed;
 $brand-blue: #636fd4;
+$brand-blue-o: #17193E;
+$brand-blue-t: #6B6C86;
+$brand-blue-m: #1C1D3A;
 $brand-dark: #222222;
 $brand-dark-o: #636b7b;
 $brand-white: #ffffff;
@@ -24,8 +27,8 @@ $thinFont: "ProximaNova-Thin", sans-serif;
 
 // D E R I V E D V A R I A B L E
 $family-primary: $regularFont;
-$text: $brand-dark-o;
-$primary: $brand-purple;
+$text: $brand-blue-t;
+$primary: $brand-primary;
 
 // S P A C I N G
 $tabPane: 440px;
