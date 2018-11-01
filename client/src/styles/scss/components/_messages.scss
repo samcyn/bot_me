@@ -27,6 +27,7 @@
   word-wrap: break-word;
   p {
     font-size: 14px;
+    font-weight: 400;
     line-height: 17px;
   }
   li {
@@ -35,8 +36,9 @@
 }
 
 .message__text--watson {
-  background-color: $brand-grey;
-  border-radius: 12px 12px 12px 0;
+  background-color: transparent;
+  border: 1px solid $brand-blue-o;
+  border-radius: 0px 12px 12px 12px;
 }
 
 .message__text--user {

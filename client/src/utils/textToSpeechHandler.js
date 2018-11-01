@@ -38,7 +38,7 @@ const startTalking = (message, token, handleMic) => {
   });
 
   // I T'S - I M P O R T A N T - T O - C L E A R - T H E - A R R A Y - O N C E - M E S S A G E S - A R E - A L L - R E A D
-  audio.onended = function() {
+  audio.onended = function () {
     textMessage = [];
     // T U R N - U P - M I C - A G A I N
     handleMic();
@@ -66,10 +66,12 @@ const TextToSpeechHandler = (
           batchMessages += option.label + " <break time='0.2s'/>";
         });
       }
+      if (data && data.response_type === "_html") {
+        batchMessages += data.text + " <break time='0.2s'/>";
+      }
     });
 
     textMessage.push(batchMessages);
-
     // I F - A R R A Y - I S - E M P T Y - N O T H I N G - TO - R E A D
     if (textMessage.length > 0) {
       // S T A R T - S P E A K I N G

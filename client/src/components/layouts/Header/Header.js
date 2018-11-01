@@ -12,67 +12,39 @@ import "./Header.css";
 class Header extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-      openDropDown: false
-    }
   }
 
-  toggleDropDownState = () => {
-    this.setState(prevState => {
-      return {
-        openDropDown: !prevState.openDropDown
-      }
-    });
-  }
 
   render() {
     const { isSideBar, sideBarToggleHandler } = this.props;
-    const { openDropDown } = this.state;
     return (
       <header className="bot__header">
         {/* S I D E B A R - H E A D E R - OR - M A I N C O N T E N T - H E A D E R  */}
         {isSideBar ? (
           <nav
-            className="navbar is-flex justify-content-space-between"
+            className="navbar is-flex justify-content-space-between is-primary"
             role="navigation"
             aria-label="main navigation"
           >
             <div className="navbar-brand">
               <div className="navbar-item" href="#">
-                <h2 className="bot__aside-title">N.S.E Bot</h2>
-              </div>
-            </div>
-            <div className="navbar-menu is-active">
-              <div className="navbar-end">
-                <div className="navbar-item">
-                  <button className="button is-transparent is-paddingless is-shadowless is-borderless has-text-primary"
-                  onClick={ this.toggleDropDownState }>
-                    <i className="icon-options-vertical" />
-                  </button>
-                  <div className={ openDropDown ? "dropdown" : "dropdown is-hidden"}>
-                    <a
-                      className="navbar-item has-text-primary"
-                    >
-                      Updates/ReadMe available soon
-                    </a>
-                  </div>
-                </div>
+                <h2 className="bot__aside-title">NSE Chatbot</h2>
               </div>
             </div>
           </nav>
         ) : (
           <nav
-            className="navbar"
+            className="navbar is-primary"
             role="navigation"
             aria-label="main navigation"
           >
             <div className="navbar-brand">
               <div className="navbar-item" href="#">
-                <div className="circles">
-                  <span className="circles__letter">J</span>
+                <div className="circles has-background-white">
+                  <span className="circles__letter has-text-primary">J</span>
                 </div>
                 <div className="user">
-                  <h6 className="user__name">Jane</h6>
+                  <h6 className="user__name has-text-white">Jane</h6>
                   <small className="user__status fadeInUp">Online</small>
                 </div>
               </div>

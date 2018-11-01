@@ -6,10 +6,15 @@
  *
  */
 
-import React from "react";
+import React, { Fragment } from "react";
 import Loader from "../Loader/Loader";
 
-const OptionsHTMLBuild = ({ newMessage, addMessage, conversationHandler, token }) => {
+const OptionsHTMLBuild = ({
+  newMessage,
+  addMessage,
+  conversationHandler,
+  token
+}) => {
   const sendOptionValue = message => {
     const text = message.value.input.text;
     const outputDate = new Date().toLocaleTimeString();
@@ -28,23 +33,42 @@ const OptionsHTMLBuild = ({ newMessage, addMessage, conversationHandler, token }
 
   return (
     <div>
-      <p>{newMessage.title}</p>
-      <ul>
-        {newMessage.options.map(message => (
-          <li key={message.label} onClick={() => sendOptionValue(message)}>
-            {message.label}
-          </li>
-        ))}
-      </ul>
+      {newMessage.type === "options" && (
+        <Fragment>
+          <p>{newMessage.title}</p>
+          <ul>
+            {newMessage.options.map(message => (
+              <li key={message.label} onClick={() => sendOptionValue(message)}>
+                {message.label}
+              </li>
+            ))}
+          </ul>
+        </Fragment>
+      )}
+      {newMessage.type === "html" && (
+        <div dangerouslySetInnerHTML={{ __html: newMessage._html }} />
+      )}
     </div>
   );
 };
 
-const Message = ({ newMessage, conversationHandler, addMessage, token, isLoading }) => {
+const Message = ({
+  newMessage,
+  conversationHandler,
+  addMessage,
+  token,
+  isLoading
+}) => {
   const { position, message } = newMessage;
   return (
     // D E C I D E - W H I C H - C L A S S - I F - S E R V E R - I S - B U S Y
-    <div className={ isLoading ? "message is-clearfix fadeInUp is-loading" : "message is-clearfix fadeInUp"}>
+    <div
+      className={
+        isLoading
+          ? "message is-clearfix fadeInUp is-loading"
+          : "message is-clearfix fadeInUp"
+      }
+    >
       {/* D E C I D E - C L A S S - B A S E D - O N - M E S S A G E - P O S I T I O N */}
       <div
         className={
@@ -55,8 +79,8 @@ const Message = ({ newMessage, conversationHandler, addMessage, token, isLoading
       >
         {/* S H O W - A V A T A R  */}
         {position === "left" && (
-          <div className="circles">
-            <span className="circles__letter">J</span>
+          <div className="circles has-background-primary">
+            <span className="circles__letter has-text-white">J</span>
           </div>
         )}
 
@@ -83,7 +107,12 @@ const Message = ({ newMessage, conversationHandler, addMessage, token, isLoading
           </div>
         </div>
         {/* L O A D E R - S H O W N - W H E N - I T E M - I S - L A S T - I N - T H E - P A N E L - A N D - I T'S - N O T - W A T S O N - R E S P O N S E - B U T - U S E R S */}
-        {position !== "left" && isLoading && <div className="message__loader is-pulled-right"><Loader /></div>}
+        {position !== "left" &&
+          isLoading && (
+            <div className="message__loader is-pulled-right">
+              <Loader />
+            </div>
+          )}
       </div>
     </div>
   );

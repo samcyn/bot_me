@@ -39,8 +39,24 @@ const ResponseHandler = (apiResponse, addMessage) => {
           position: "left",
           label: outputIntent,
           message: {
+            type: "options",
             title: data.title,
             options: data.options
+          },
+          date: outputDate,
+          hasTail: true
+        };
+        // A D D - M E S S A G E - T O - T H E - P A C K;
+        addMessage(outputMessage);
+      }
+      if (data && data.response_type === "_html") {
+        // console.log(data.text);
+        const outputMessage = {
+          position: "left",
+          label: outputIntent,
+          message: {
+            type: "html",
+            _html: data.text
           },
           date: outputDate,
           hasTail: true
