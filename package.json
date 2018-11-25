@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "client": "cd client && yarn start",
+    "gen-css": "cd client && yarn build-css",
     "server": "node server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
