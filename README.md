@@ -1,3 +1,2 @@
-# bot_me
-Personal Assistant bot
-Work still in progress a proper readme will be available soon. 
+# Personal Assistant bot
+checkout dev branch or the staging branch for more details. 
